@@ -1,0 +1,14 @@
+import java.time.Instant
+
+jib {
+    from {
+        image = "eclipse-temurin:17-focal"
+    }
+    to {
+        image = "config-server:latest"
+    }
+    container {
+        ports = ["1234"]
+        creationTime = Instant.now().toString()
+    }
+}

@@ -1,0 +1,12 @@
+version: "3"
+
+tasks:
+  build:
+    desc: Build the app
+    cmds:
+      - ./gradlew clean build
+
+  jib:
+    desc: Create Docker Image with JIB
+    cmds:
+      - ./gradlew jibDockerBuild

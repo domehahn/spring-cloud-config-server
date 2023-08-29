@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        bootstrap: true
+        composite:
+          - type: git
+            uri: https://github.com/domehahn/spring-boot-microservices-config-files
+          - type: vault
+            token: root
+            host: vault
+            port: 8200
+            kvVersion: 2
+        vault:
+          token: root
+    consul:
+      host: consul
+      port: 8500
+      config:
+        format: YAML
+        enabled: true
+server:
+  port: 1234

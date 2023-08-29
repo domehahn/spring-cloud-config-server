@@ -1,0 +1,75 @@
+services:
+  vault:
+    image: hashicorp/vault:latest
+    restart: always
+    volumes:
+      - vault_data:/vault/data
+      - vault_log:/etc/vault/logs
+      - ./vault:/vault
+    ports:
+      - 8200:8200
+    env_file:
+      - ./vault/vault.env
+    cap_add:
+      - IPC_LOCK
+    container_name: vault
+    entrypoint: "vault server -dev"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8200 || exit 1
+      interval: 10s
+      retries: 12
+      start_period: 10s
+      timeout: 10s
+    networks:
+      - microservice-network
+
+  consul:
+    image: hashicorp/consul:latest
+    restart: always
+    ports:
+      - 8500:8500
+    env_file:
+      - ./consul/consul.env
+    container_name: consul
+    volumes:
+      - consul_data:/consul/data
+    networks:
+      - microservice-network
+
+  #docker compose run --rm terraform-consul init
+  #docker compose run --rm terraform-consul plan
+  #docker compose run --rm terraform-consul apply
+  terraform-consul:
+    image: hashicorp/terraform:0.14.10
+    volumes:
+      - ./terraform/consul:/infra
+    env_file:
+      - ./terraform/terraform.env
+    working_dir: /infra
+    restart: unless-stopped
+    networks:
+      - microservice-network
+
+  #docker compose run --rm terraform-vault init
+  #docker compose run --rm terraform-vault plan
+  #docker compose run --rm terraform-vault apply
+  terraform-vault:
+    image: hashicorp/terraform:0.14.10
+    volumes:
+      - ./terraform/vault:/infra
+    env_file:
+      - ./terraform/terraform.env
+    working_dir: /infra
+    restart: unless-stopped
+    networks:
+      - microservice-network
+
+volumes:
+  vault_data:
+  vault_log:
+  consul_data:
+
+networks:
+  microservice-network:
+    driver: bridge
+    external: false
