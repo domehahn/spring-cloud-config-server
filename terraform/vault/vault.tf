@@ -10,14 +10,13 @@ resource "vault_kv_secret_v2" "api-gateway" {
   delete_all_versions        = true
   data_json                  = jsonencode(
   {
-    "redis.password" = "eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"
+    "redis.password" = "redispassword"
   }
   )
   custom_metadata {
     max_versions = 5
     data = {
-      "rabbitmq.username" = "guest",
-      "rabbitmq.password" = "guest"
+      "redis.password" = "redispassword"
     }
   }
 }

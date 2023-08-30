@@ -21,5 +21,21 @@ spring:
       config:
         format: YAML
         enabled: true
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  otlp:
+   tracing:
+    endpoint: http://localhost:4318/v1/traces
+
 server:
   port: 1234
