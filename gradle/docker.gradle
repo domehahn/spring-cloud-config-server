@@ -3,6 +3,12 @@ import java.time.Instant
 jib {
     from {
         image = "eclipse-temurin:17-focal"
+        platforms {
+            platform {
+                architecture = 'arm64'
+                os = 'linux'
+            }
+        }
     }
     to {
         image = "config-server:latest"
