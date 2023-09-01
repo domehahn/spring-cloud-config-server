@@ -2,6 +2,15 @@ spring:
   application:
     name: config-server
   cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        health-check-path: ${server.servlet.context-path:}/actuator/health
+        health-check-interval: 15s
+        health-check-timeout: 90s
+        health-check-critical-timeout: 3m
+        instanceId: "${spring.application.name}:${random.int[1,999999]}"
+        instanceZone: zone1
     config:
       server:
         bootstrap: true
@@ -21,6 +30,21 @@ spring:
       config:
         format: YAML
         enabled: true
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  otlp:
+   tracing:
+    endpoint: http://jaeger:4318/v1/traces
 
 server:
   port: 1234
