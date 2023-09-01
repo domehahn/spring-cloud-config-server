@@ -1,16 +1,6 @@
 spring:
   application:
     name: config-server
-  cloud:
-    consul:
-      discovery:
-        prefer-ip-address: true
-        health-check-path: ${server.servlet.context-path:}/actuator/health
-        health-check-interval: 15s
-        health-check-timeout: 90s
-        health-check-critical-timeout: 3m
-        instanceId: "${spring.application.name}:${random.int[1,999999]}"
-        instanceZone: zone1
     config:
       server:
         bootstrap: true
@@ -30,6 +20,16 @@ spring:
       config:
         format: YAML
         enabled: true
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        health-check-path: ${server.servlet.context-path:}/actuator/health
+        health-check-interval: 15s
+        health-check-timeout: 90s
+        health-check-critical-timeout: 3m
+        instanceId: "${spring.application.name}:${random.int[1,999999]}"
+        instanceZone: zone1
 
 management:
   security:
